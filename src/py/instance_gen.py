@@ -41,14 +41,9 @@ def to_tsp(filename, coords, dimension, description, maxVal):
 
     maxLen = len(str(maxVal)) + 1
 
-    for y in mat:
-        for x in y:
-            curLen = len(str(x))
-            f.write(" " * (maxLen - curLen))
-            f.write(x)
-        f.write("\n")
+    for i in range(dimension):
+        f.write(i + " " + coords[i][0] + " " + coords[i][1] + "\n")
 
-    f.write(" " + maxVal + "\n")
     f.write("EOF\n")
     f.close()
     return None
