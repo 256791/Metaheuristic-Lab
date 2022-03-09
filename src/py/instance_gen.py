@@ -6,13 +6,16 @@ class InstanceType(Enum):
     ASYMETRIC = 2
     EUC2D = 3
 
+def header(name, filetype, comment, dimension, edgeWeightType):
+    return "NAME: " + filename + "\n" +
+            "TYPE: " + filetype + "\n" +
+            "COMMENT: " + description + "\n" +
+            "DIMENSION: " + dimension + "\n" +
+            "EDGE_WEIGHT_TYPE: " + edgeWeightType + "\n"
+
 def to_atsp(filename, mat, dimension, description, maxVal):
     f = open(filename + ".atsp", "w")
-    f.write("NAME: " + filename + "\n")
-    f.write("TYPE: ATSP\n")
-    f.write("COMMENT: " + description + "\n")
-    f.write("DIMENSION: " + dimension + "\n")
-    f.write("EDGE_WEIGHT_TYPE: EXPLICIT\n")
+    f.write(header(filename, "ATSP", description, dimension, "EXPLICIT"))
     f.write("EDGE_WEIGHT_FORMAT: FULL_MATRIX\n")
     f.write("EDGE_WEIGHT_SECTION\n")
 
@@ -32,12 +35,8 @@ def to_atsp(filename, mat, dimension, description, maxVal):
 
 def to_tsp(filename, coords, dimension, description, maxVal):
     f = open(filename + ".tsp", "w")
-    f.write("NAME: " + filename + "\n")
-    f.write("TYPE: TSP\n")
-    f.write("COMMENT: " + description + "\n")
-    f.write("DIMENSION: " + dimension + "\n")
-    f.write("EDGE_WEIGHT_TYPE: EUC_2D\n")
-    f.write("EDGE_WEIGHT_SECTION\n")
+    f.write(header(filename, "TSP", description, dimension, "EUC_2D"))
+    f.write("NODE_COORD_SECTION\n")
 
     maxLen = len(str(maxVal)) + 1
 
