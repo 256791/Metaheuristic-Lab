@@ -28,7 +28,6 @@ def to_atsp(filename, mat, dimension, description, maxVal):
             f.write(x)
         f.write("\n")
 
-    f.write(" " + maxVal + "\n")
     f.write("EOF\n")
     f.close()
     return None
