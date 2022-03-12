@@ -14,7 +14,7 @@ def header(filename, filetype, description, dimension, edgeWeightType):
             "EDGE_WEIGHT_TYPE: " + edgeWeightType + "\n"
 
 def to_atsp(filename, mat, dimension, description, maxVal):
-    f = open(filename + ".atsp", "w")
+    f = open("../data/" + filename + ".atsp", "w")
     f.write(header(filename, "ATSP", description, dimension, "EXPLICIT"))
     f.write("EDGE_WEIGHT_FORMAT: FULL_MATRIX\n")
     f.write("EDGE_WEIGHT_SECTION\n")
@@ -33,7 +33,7 @@ def to_atsp(filename, mat, dimension, description, maxVal):
     return None
 
 def to_tsp(filename, coords, dimension, description, maxVal):
-    f = open(filename + ".tsp", "w")
+    f = open("../data/" + filename + ".tsp", "w")
     f.write(header(filename, "TSP", description, dimension, "EUC_2D"))
     f.write("NODE_COORD_SECTION\n")
 
