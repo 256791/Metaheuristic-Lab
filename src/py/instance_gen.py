@@ -38,7 +38,7 @@ def to_tsp(filename, coords, dimension, description, maxVal):
     f.write("NODE_COORD_SECTION\n")
 
     for i in range(dimension):
-        f.write(f"{i} {coords[i][0]}.0 {coords[i][1]}.0\n")
+        f.write(f"{i + 1} {coords[i][0]}.0 {coords[i][1]}.0\n")
 
     f.write("EOF\n")
     f.close()
