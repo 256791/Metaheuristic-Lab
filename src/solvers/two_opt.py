@@ -1,5 +1,6 @@
 from ctypes import *
 import tsplib95
+import time
 
 # def two_opt_swap(tour, i, k):
 #     swapped = tour[0:i]
@@ -69,9 +70,19 @@ def two_opt(problem):
     return path
 
 
+def get_results(problem, path):
+    if path == None:
+        path = list(problem.get_nodes())
+    start = time.time_ns()
+    tour = nearest_neighbour(problem) # TODO add path parameter
+    runtime = time.time_ns() - start
+
+    return (problem.trace_tours([tour])[0], runtime)
+
 if __name__ == '__main__':
     problem = tsplib95.load('../data/gr120.tsp')
-    path = two_opt(problem)
+    # path = two_opt(problem)
     # path = two_opt_py(problem)
-    print(path)
-    print(problem.trace_tours([path])[0])
+    # print(path)
+    # print(problem.trace_tours([path])[0])
+    get_results(problem)

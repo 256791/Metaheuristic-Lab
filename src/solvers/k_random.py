@@ -1,8 +1,8 @@
 import tsplib95
 import numpy as np
+import time
 
-
-def k_random(problem, k):
+def k_random(problem, k=1):
     if k < 1:
         return
     cost = np.inf
@@ -16,8 +16,16 @@ def k_random(problem, k):
             tour = curTour
 
     problem.tours.append(tour)
+    return tour
 
+
+def get_resuts(problem, k=1):
+    start = time.time_ns()
+    tour = k_random(problem, k)
+    runtime = time.time_ns() - start
+
+    return (problem.trace_tours([tour])[0], runtime)
 
 if __name__ == '__main__':
     problem = tsplib95.load('../data/br17.atsp')
-    k_random(problem, 10)
+    print(get_resuts(problem, 10))
