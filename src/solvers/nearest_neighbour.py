@@ -1,35 +1,71 @@
+from ctypes import *
 import tsplib95
 import numpy as np
 import time
 
+# def nearest_neighbour(problem, vertex=0):
+#     if vertex < 0 or vertex > len(list(problem.get_nodes())):
+#         return
+    
+#     visited = [False for _ in problem.get_nodes()]
+#     visited[vertex] = True
 
+#     tour = []
+#     tour.append(vertex)
+
+#     while False in visited:
+#         cost = np.inf
+#         nextVertex = int
+#         for i in problem.get_nodes():
+#             if vertex == i or visited[i]:
+#                 continue
+#             curCost = problem.get_weight(*(vertex, i))
+#             if cost > curCost:
+#                 cost = curCost
+#                 nextVertex = i
+
+#         tour.append(nextVertex)
+#         vertex = nextVertex
+#         visited[vertex] = True
+
+#     problem.tours.append(tour)
+#     return tour
+
+x = cdll.LoadLibrary('./nearest_neighbour_cpp/nearest_neighbour.so')
+
+x.nearest_neighbour.argtypes = [POINTER(POINTER(c_double)), c_int, c_int]
+x.nearest_neighbour.restype = std_vec(c_int)
+
+def get_full_matrix(problem):
+    mat = []
+    for i in problem.get_nodes():
+        arr = []
+        for j in problem.get_nodes():
+            arr.append(problem.get_weight(i,j))
+        mat.append(arr)
+    return mat
+
+def c_double_mat(mat):
+    arr = []
+    for i in range(len(mat)):
+        arr.append((c_double * len(mat))(*mat[i]))
+    return (POINTER(c_double) * len(mat))(*arr)
+    
 def nearest_neighbour(problem, vertex=0):
     if vertex < 0 or vertex > len(list(problem.get_nodes())):
         return
     
-    visited = [False for _ in problem.get_nodes()]
-    visited[vertex] = True
+    mat = get_full_matrix(problem)
 
-    tour = []
-    tour.append(vertex)
-
-    while False in visited:
-        cost = np.inf
-        nextVertex = int
-        for i in problem.get_nodes():
-            if vertex == i or visited[i]:
-                continue
-            curCost = problem.get_weight(*(vertex, i))
-            if cost > curCost:
-                cost = curCost
-                nextVertex = i
-
-        tour.append(nextVertex)
-        vertex = nextVertex
-        visited[vertex] = True
-
-    problem.tours.append(tour)
-    return tour
+    c_path = x.nearest_neighbour(c_double_mat(mat), c_int(len(mat)), c_int(vertex))
+    
+    path = []
+    nodes = list(problem.get_nodes())
+    for i in range(len(mat)):
+        path.append(nodes[c_path[i]])
+    
+    problem.tours.append(path)
+    return path
 
 
 def get_resuts(problem, vertex=1):
