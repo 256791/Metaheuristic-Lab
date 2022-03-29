@@ -147,5 +147,8 @@ def print_graph(problem, weights=False):
     plt.show()
 
 
-def PRD(problem, tour, opt):
-    return 100 * (problem.trace_tours([tour])[0] - problem.trace_tours([opt])[0]) / problem.trace_tours([opt])[0]
+# def PRD(problem, tour, opt):
+#     return 100 * (problem.trace_tours([tour])[0] - problem.trace_tours([opt])[0]) / problem.trace_tours([opt])[0]
+
+def PRD(tour, opt):
+    return 100 * (tour - opt) / opt

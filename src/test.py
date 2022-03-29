@@ -1,7 +1,7 @@
 import matplotlib.pyplot as plt
 import tsplib95 as tsp
 from solvers import nearest_neighbour, k_random, two_opt
-from tsp_tools import InstanceType, gen_random_instance
+from tsp_tools import InstanceType, gen_random_instance, PRD
 
 
 def prepare_tests(sizes, type):
@@ -20,13 +20,14 @@ def prepare_tests(sizes, type):
     return tests
 
 
-def plot_test(namesufix, axis, col, sizes, times, prds, labels):
+def plot_test(namesufix, axis, col, sizes, times, paths, prds, labels):
     axis[0, col].set_title("Avg path" + namesufix)
     axis[1, col].set_title("Avg PRD" + namesufix)
     axis[2, col].set_title("Avg Time" + namesufix)
 
     for i in range(len(labels)):
-        axis[0, col].plot(sizes, prds[i], label=labels[i])
+        axis[0, col].plot(sizes, paths[i], label=labels[i])
+        axis[1, col].plot(sizes, prds[i], label=labels[i])
         axis[2, col].plot(sizes, times[i], label=labels[i])
 
     axis[0, col].legend(loc="upper right")
@@ -54,6 +55,17 @@ def run_tests(instances, algorithm, repeat=1):
     return (path, time)
 
 
+def get_prds(paths):
+    prds = [[] for _ in range(len(paths))]
+    
+    for i in range(len(paths[0])):
+        opt = min([paths[j][i] for j in range(len(paths))])
+
+        for j in range(len(paths)):
+            prds[j].append(PRD(paths[j][i], opt))
+
+    return prds
+
 def test(sizes):
     figure, axis = plt.subplots(3, 3)
     figure.set_figheight(16.2)
@@ -66,10 +78,13 @@ def test(sizes):
     labels = ['nearest_neighbour', 'k_random', 'two_opt']
 
     asym_path = []
+    asym_prd = []
     asym_time = []
     sym_path = []
+    sym_prd = []
     sym_time = []
     euc_path = []
+    euc_prd = []
     euc_time = []
     
 
@@ -83,7 +98,7 @@ def test(sizes):
     asym_path.append(p)
     asym_time.append(t)
 
-    plot_test(' asymetric', axis, 0, sizes, asym_time, asym_path, labels)
+    plot_test(' asymetric', axis, 0, sizes, asym_time, asym_path, get_prds(asym_path), labels)
 
 
     p,t = run_tests(sym_t, nearest_neighbour.get_resuts)
@@ -96,7 +111,7 @@ def test(sizes):
     sym_path.append(p)
     sym_time.append(t)
 
-    plot_test(' symetric', axis, 1, sizes, sym_time, sym_path, labels)
+    plot_test(' symetric', axis, 1, sizes, sym_time, sym_path, get_prds(sym_path), labels)
 
 
     # labels = [ 'k_random', 'two_opt']
@@ -111,7 +126,7 @@ def test(sizes):
     euc_path.append(p)
     euc_time.append(t)
 
-    plot_test(' euclidean2D', axis, 2, sizes, euc_time, euc_path, labels)
+    plot_test(' euclidean2D', axis, 2, sizes, euc_time, euc_path, get_prds(euc_path), labels)
 
     
 
