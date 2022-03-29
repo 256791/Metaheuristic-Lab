@@ -40,11 +40,13 @@ double eval(double **edges, int *path, int size)
 
 extern "C"
 {
-    int *two_opt(double **edges, int size)
+    int *two_opt(double **edges, int *initialPath, int size)
     {
+        
         int *path = new int[size];
         for (int i = 0; i < size; i++)
-            path[i] = i;
+            path[i] = initialPath[i];
+        
 
         double cost = eval(edges, path, size);
 

@@ -40,7 +40,7 @@ if __name__ == '__main__':
 else:
     x = cdll.LoadLibrary('./solvers/two_opt_cpp/two_opt.so')
 
-x.two_opt.argtypes = [POINTER(POINTER(c_double)), c_int]
+x.two_opt.argtypes = [POINTER(POINTER(c_double)), POINTER(c_int), c_int]
 x.two_opt.restype = POINTER(c_int)
 
 def get_full_matrix(problem):
@@ -58,11 +58,17 @@ def c_double_mat(mat):
         arr.append((c_double * len(mat))(*mat[i]))
     return (POINTER(c_double) * len(mat))(*arr)
 
-def two_opt(problem):
+def two_opt(problem, initial_path=None):
     
     mat = get_full_matrix(problem)
+    if initial_path == None:
+        initial_path = range(len(mat))
+    else:
+        for i in range(len(initial_path)):
+            initial_path[i] = initial_path[i]-1
 
-    c_path = x.two_opt(c_double_mat(mat), c_int(len(mat)))
+    c_path = x.two_opt(c_double_mat(mat), (c_int * len(mat))(*initial_path), c_int(len(mat)))
+    
 
     path = []
     nodes = list(problem.get_nodes())
@@ -74,13 +80,12 @@ def two_opt(problem):
 
 
 def get_results(problem, path=None):
-    if path == None:
-        path = list(problem.get_nodes())
     start = time.time_ns()
-    tour = two_opt(problem) # TODO add path parameter
+    tour = two_opt(problem, path)
     runtime = time.time_ns() - start
 
     return (problem.trace_tours([tour])[0], runtime)
+
 
 if __name__ == '__main__':
     problem = tsplib95.load('../data/gr120.tsp')
