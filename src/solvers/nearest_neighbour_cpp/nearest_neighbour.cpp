@@ -1,5 +1,7 @@
 #include <vector>
 #include <algorithm>
+#include <iostream>
+#include <algorithm>
 
 extern "C" {
     int *nearest_neighbour(double **edges, int size, int vertex) {
@@ -27,7 +29,11 @@ extern "C" {
             visited[vertex] = true;
         }
             
-        int *pathData = path.data();
-        return pathData;
+        int *data = path.data();
+        int *copy = new int[size];
+        for(int i=0;i<size; i++)
+            copy[i] = data[i];
+
+        return copy;
     }
 }

@@ -30,11 +30,15 @@ import time
 
 #     problem.tours.append(tour)
 #     return tour
+x = None
+if __name__ == '__main__':
+    x = cdll.LoadLibrary('./nearest_neighbour_cpp/nearest_neighbour.so')
+else:
+    x = cdll.LoadLibrary('./solvers/nearest_neighbour_cpp/nearest_neighbour.so')
 
-x = cdll.LoadLibrary('./nearest_neighbour_cpp/nearest_neighbour.so')
 
 x.nearest_neighbour.argtypes = [POINTER(POINTER(c_double)), c_int, c_int]
-x.nearest_neighbour.restype = std_vec(c_int)
+x.nearest_neighbour.restype = POINTER(c_int)
 
 def get_full_matrix(problem):
     mat = []
@@ -63,7 +67,7 @@ def nearest_neighbour(problem, vertex=0):
     nodes = list(problem.get_nodes())
     for i in range(len(mat)):
         path.append(nodes[c_path[i]])
-    
+
     problem.tours.append(path)
     return path
 

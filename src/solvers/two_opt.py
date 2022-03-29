@@ -34,8 +34,11 @@ import time
 #     problem.tours.append(tour)
 #     return tour
 
-
-x = cdll.LoadLibrary('./two_opt_cpp/two_opt.so')
+x = None
+if __name__ == '__main__':
+    x = cdll.LoadLibrary('./two_opt_cpp/two_opt.so')
+else:
+    x = cdll.LoadLibrary('./solvers/two_opt_cpp/two_opt.so')
 
 x.two_opt.argtypes = [POINTER(POINTER(c_double)), c_int]
 x.two_opt.restype = POINTER(c_int)
