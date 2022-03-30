@@ -64,8 +64,9 @@ def two_opt(problem, initial_path=None):
     if initial_path == None:
         initial_path = range(len(mat))
     else:
-        for i in range(len(initial_path)):
-            initial_path[i] = initial_path[i]-1
+        if 0 not in initial_path:
+            for i in range(len(initial_path)):
+                initial_path[i] = initial_path[i]-1
 
     c_path = x.two_opt(c_double_mat(mat), (c_int * len(mat))(*initial_path), c_int(len(mat)))
     

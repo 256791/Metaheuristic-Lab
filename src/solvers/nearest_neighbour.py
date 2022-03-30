@@ -69,10 +69,11 @@ def nearest_neighbour(problem, vertex=0):
         path.append(nodes[c_path[i]])
 
     problem.tours.append(path)
+    # print(path)
     return path
 
 
-def get_resuts(problem, vertex=1):
+def get_resuts(problem, vertex=0):
     start = time.time_ns()
     tour = nearest_neighbour(problem, vertex)
     runtime = time.time_ns() - start

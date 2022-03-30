@@ -66,7 +66,7 @@ def get_prds(paths):
 
     return prds
 
-def test(sizes):
+def test(sizes, figname):
     figure, axis = plt.subplots(3, 3)
     figure.set_figheight(16.2)
     figure.set_figwidth(19.2)
@@ -75,18 +75,17 @@ def test(sizes):
     sym_t = prepare_tests(sizes, InstanceType.SYMETRIC)
     euc_t = prepare_tests(sizes, InstanceType.EUC2D)
 
-    labels = ['nearest_neighbour', 'k_random', 'two_opt']
+    labels = ['nearest_neighbour', 'k_random', 'two_opt_ord', 'two_opt_grd', 'two_opt_rnd']
 
     asym_path = []
-    asym_prd = []
     asym_time = []
     sym_path = []
-    sym_prd = []
     sym_time = []
     euc_path = []
-    euc_prd = []
     euc_time = []
     
+    two_opt_grd = lambda problem: two_opt.get_results(problem, nearest_neighbour.nearest_neighbour(problem))
+    two_opt_rnd = lambda problem: two_opt.get_results(problem, k_random.k_random(problem))
 
     p,t = run_tests(asym_t, nearest_neighbour.get_resuts)
     asym_path.append(p)
@@ -95,6 +94,12 @@ def test(sizes):
     asym_path.append(p)
     asym_time.append(t)
     p,t = run_tests(asym_t, two_opt.get_results)
+    asym_path.append(p)
+    asym_time.append(t)
+    p,t = run_tests(asym_t, two_opt_grd)
+    asym_path.append(p)
+    asym_time.append(t)
+    p,t = run_tests(asym_t, two_opt_rnd)
     asym_path.append(p)
     asym_time.append(t)
 
@@ -110,29 +115,42 @@ def test(sizes):
     p,t = run_tests(sym_t, two_opt.get_results)
     sym_path.append(p)
     sym_time.append(t)
+    p,t = run_tests(sym_t, two_opt_grd)
+    sym_path.append(p)
+    sym_time.append(t)
+    p,t = run_tests(sym_t, two_opt_rnd)
+    sym_path.append(p)
+    sym_time.append(t)
 
     plot_test(' symetric', axis, 1, sizes, sym_time, sym_path, get_prds(sym_path), labels)
 
-
-    # labels = [ 'k_random', 'two_opt']
     p,t = run_tests(euc_t, nearest_neighbour.get_resuts)
     euc_path.append(p)
     euc_time.append(t)
-    
     p,t = run_tests(euc_t, k_random.get_resuts)
     euc_path.append(p)
     euc_time.append(t)
     p,t = run_tests(euc_t, two_opt.get_results)
     euc_path.append(p)
     euc_time.append(t)
+    p,t = run_tests(euc_t, two_opt_grd)
+    euc_path.append(p)
+    euc_time.append(t)
+    p,t = run_tests(euc_t, two_opt_rnd)
+    euc_path.append(p)
+    euc_time.append(t)
+
 
     plot_test(' euclidean2D', axis, 2, sizes, euc_time, euc_path, get_prds(euc_path), labels)
 
     
 
     # plt.show()
-    plt.savefig('fig.png')
+    plt.savefig(f'{figname}.png')
 
 
 if __name__ == '__main__':
-    test(range(10, 100, 10))
+    test(range(5, 51, 5), 'small')
+    test(range(50, 151, 10), 'medium')
+    test(range(200, 801, 100), 'large')
+
