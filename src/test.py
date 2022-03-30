@@ -57,7 +57,7 @@ def run_tests(instances, algorithm, repeat=1):
 
 def get_prds(paths):
     prds = [[] for _ in range(len(paths))]
-    
+
     for i in range(len(paths[0])):
         opt = min([paths[j][i] for j in range(len(paths))])
 
@@ -143,14 +143,67 @@ def test(sizes, figname):
 
     plot_test(' euclidean2D', axis, 2, sizes, euc_time, euc_path, get_prds(euc_path), labels)
 
-    
-
     # plt.show()
     plt.savefig(f'{figname}.png')
 
+def plot_test_k_random(axis, k_range, tests, label):
+    path = []
+
+    for k in k_range:
+        p, _ = k_random.get_resuts(tests[0], k)
+        path.append(p)
+
+    axis.plot(k_range, path, label=label)
+    axis.legend(loc="upper right")
+
+
+def test_k_random(size, k_range, figname):
+    figure, axis = plt.subplots(1, 1)
+    figure.set_figheight(8.2)
+    figure.set_figwidth(8.2)
+
+    asym_t = prepare_tests([size], InstanceType.ASYMETRIC)
+    sym_t = prepare_tests([size], InstanceType.SYMETRIC)
+    euc_t = prepare_tests([size], InstanceType.EUC2D)
+
+    axis.set_title('k_random for k')
+
+    plot_test_k_random(axis, k_range, asym_t, 'asymetric')
+    plot_test_k_random(axis, k_range, sym_t, 'symetric')
+    plot_test_k_random(axis, k_range, euc_t, 'euclidean')
+
+    plt.savefig(f'{figname}.png')
+
+def plot_test_nearest_neighbour(axis, size, tests, label):
+    path = []
+
+    for v in range(0, size):
+        p, _ = nearest_neighbour.get_resuts(tests[0], v)
+        path.append(p)
+
+    axis.plot(range(0, size), path, label=label)
+    axis.legend(loc="upper right")
+
+def test_nearest_neighbour(size, figname):
+    figure, axis = plt.subplots(1, 1)
+    figure.set_figheight(8.2)
+    figure.set_figwidth(8.2)
+
+    asym_t = prepare_tests([size], InstanceType.ASYMETRIC)
+    sym_t = prepare_tests([size], InstanceType.SYMETRIC)
+    euc_t = prepare_tests([size], InstanceType.EUC2D)
+
+    axis.set_title('nearest_neighbour for each vertex')
+
+    plot_test_nearest_neighbour(axis, size, asym_t, 'asymetric')
+    plot_test_nearest_neighbour(axis, size, sym_t, 'symetric')
+    plot_test_nearest_neighbour(axis, size, euc_t, 'euclidean')
+
+    plt.savefig(f'{figname}.png')
 
 if __name__ == '__main__':
-    test(range(5, 51, 5), 'small')
-    test(range(50, 151, 10), 'medium')
-    test(range(200, 801, 100), 'large')
-
+    # test(range(5, 51, 5), 'small')
+    # test(range(50, 151, 10), 'medium')
+    # test(range(200, 801, 100), 'large')
+    # test_k_random(100, range(1, 100), 'krandom')
+    test_nearest_neighbour(100, 'neighbour')

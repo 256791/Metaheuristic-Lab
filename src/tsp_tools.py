@@ -3,6 +3,7 @@ import tsplib95
 import matplotlib.pyplot as plt
 import networkx as nx
 from enum import Enum
+import math
 
 
 class InstanceType(Enum):
@@ -54,6 +55,7 @@ def to_tsp(filename, coords, dimension, description, maxVal):
 
 def gen_random_instance(filename, dimension, instanceType=InstanceType.SYMETRIC, description="none", minVal=0, maxVal=50):
     if(instanceType == InstanceType.EUC2D):
+        maxVal /= math.sqrt(2)
         mat = np.random.random_integers(minVal, maxVal, (dimension, 2))
         to_tsp(filename, mat, dimension, description, maxVal)
         return mat
