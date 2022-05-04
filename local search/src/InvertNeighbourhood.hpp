@@ -1,16 +1,16 @@
-#ifndef TWO_OPT_H
-#define TWO_OPT_H
+#ifndef INVERT_NEIGHBOURHOOD_H
+#define INVERT_NEIGHBOURHOOD_H
 #include "TSPTabu.hpp"
 #include <algorithm>
 #include <iostream>
 
-class TwoOptSolution : public TSPSolution
+class InvertNeighbourhood : public TSPSolution
 {
 public:
   TSPSolution *parrent;
   pair<int, int> invert;
 
-  TwoOptSolution(TSPSolution *parrent, pair<int, int> invert, double cost);
+  InvertNeighbourhood(TSPSolution *parrent, pair<int, int> invert, double cost);
 
   pair<int, int> tabu() override;
 

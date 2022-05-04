@@ -1,5 +1,5 @@
-#include "TwoOpt.hpp"
-TwoOptSolution::TwoOptSolution(TSPSolution *parrent, pair<int, int> invert, double cost)
+#include "InvertNeighbourhood.hpp"
+InvertNeighbourhood::InvertNeighbourhood(TSPSolution *parrent, pair<int, int> invert, double cost)
 {
   this->parrent = parrent;
   this->size = parrent->size;
@@ -8,12 +8,12 @@ TwoOptSolution::TwoOptSolution(TSPSolution *parrent, pair<int, int> invert, doub
   this->cost = cost;
 }
 
-pair<int, int> TwoOptSolution::tabu()
+pair<int, int> InvertNeighbourhood::tabu()
 {
   return this->invert;
 }
 
-vector<int> TwoOptSolution::getPath()
+vector<int> InvertNeighbourhood::getPath()
 {
   if (path.size() == size)
     return path;
@@ -24,14 +24,14 @@ vector<int> TwoOptSolution::getPath()
   return path;
 }
 
-vector<Solution *> TwoOptSolution::twoOptNeighbourhood(Problem *p, Solution *s)
+vector<Solution *> InvertNeighbourhood::twoOptNeighbourhood(Problem *p, Solution *s)
 {
   TSPProblem *problem;
   if (!(problem = dynamic_cast<TSPProblem *>(p)))
     throw runtime_error("Trying to find two opt neighborhood from non tsp problem");
 
-  TwoOptSolution *solution;
-  if (!(solution = dynamic_cast<TwoOptSolution *>(s)))
+  InvertNeighbourhood *solution;
+  if (!(solution = dynamic_cast<InvertNeighbourhood *>(s)))
   {
     throw runtime_error("Trying to find two opt neighborhood from non two opt solution");
   }
@@ -52,7 +52,7 @@ vector<Solution *> TwoOptSolution::twoOptNeighbourhood(Problem *p, Solution *s)
         cost += problem->cost(npath[i], npath[i + 1]);
       }
       cost += problem->cost(npath[npath.size() - 1], npath[0]);
-      solutions.push_back(new TwoOptSolution(solution, pair<int, int>(i, j), cost));
+      solutions.push_back(new InvertNeighbourhood(solution, pair<int, int>(i, j), cost));
     }
   }
 
