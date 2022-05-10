@@ -1,4 +1,13 @@
 #include "InvertNeighbourhood.hpp"
+
+InvertNeighbourhood::InvertNeighbourhood(TSPProblem *problem)
+{
+  this->size = problem->size();
+  for (int i = 0; i < problem->matrix.size(); i++)
+    this->path.push_back(i);
+  problem->eval(this);
+}
+
 InvertNeighbourhood::InvertNeighbourhood(TSPSolution *parrent, pair<int, int> invert, double cost)
 {
   this->parrent = parrent;
@@ -24,7 +33,7 @@ vector<int> InvertNeighbourhood::getPath()
   return path;
 }
 
-vector<Solution *> InvertNeighbourhood::twoOptNeighbourhood(Problem *p, Solution *s)
+vector<Solution *> InvertNeighbourhood::neighbourhood(Problem *p, Solution *s)
 {
   TSPProblem *problem;
   if (!(problem = dynamic_cast<TSPProblem *>(p)))

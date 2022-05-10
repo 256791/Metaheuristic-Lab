@@ -18,16 +18,15 @@ public:
 
 class TSPProblem : public Problem
 {
-private:
-  vector<vector<double>> matrix;
-
 public:
+  vector<vector<double>> matrix;
+  TSPProblem() = default;
   TSPProblem(vector<vector<double>> mat);
 
+  bool fromFile(string filename);
+
   double cost(int a, int b);
-
   int size();
-
   double eval(Solution *s) override;
 };
 #endif

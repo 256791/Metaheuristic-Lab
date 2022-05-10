@@ -1,4 +1,13 @@
 #include "SwapNeighbourhood.hpp"
+
+SwapNeighbourhood::SwapNeighbourhood(TSPProblem *problem)
+{
+  this->size = problem->size();
+  for (int i = 0; i < problem->matrix.size(); i++)
+    this->path.push_back(i);
+  problem->eval(this);
+}
+
 SwapNeighbourhood::SwapNeighbourhood(TSPSolution *parrent, pair<int, int> swap, double cost)
 {
   this->parrent = parrent;
@@ -25,7 +34,8 @@ vector<int> SwapNeighbourhood::getPath()
   return path;
 }
 
-vector<Solution *> SwapNeighbourhood::swapNeighbourhood(Problem *p, Solution *s) {
+vector<Solution *> SwapNeighbourhood::neighbourhood(Problem *p, Solution *s)
+{
   TSPProblem *problem;
   if (!(problem = dynamic_cast<TSPProblem *>(p)))
     throw runtime_error("Trying to find two opt neighborhood from non tsp problem");
@@ -33,7 +43,7 @@ vector<Solution *> SwapNeighbourhood::swapNeighbourhood(Problem *p, Solution *s)
   SwapNeighbourhood *solution;
   if (!(solution = dynamic_cast<SwapNeighbourhood *>(s)))
     throw runtime_error("Trying to find two opt neighborhood from non two opt solution");
-  
+
   vector<int> path = solution->getPath();
 
   vector<Solution *> solutions;

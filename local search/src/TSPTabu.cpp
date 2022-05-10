@@ -1,5 +1,7 @@
 #include "TSPTabu.hpp"
 #include <iostream>
+#include <fstream>
+
 vector<int> TSPSolution::getPath()
 {
   return path;
@@ -47,3 +49,27 @@ double TSPProblem::eval(Solution *s)
     return cost;
   }
 }
+
+bool TSPProblem::fromFile(string filename){
+  system(("python3 convert.py " + filename).c_str());
+  fstream in("data/" + filename);
+  matrix.clear();
+
+  int size, val;
+  if (!(in >> size))
+    return false;
+
+  for (int i = 0; i < size; i++)
+  {
+    vector<double> row;
+    for (int j = 0; j < size; j++)
+    {
+      if (!(in >> val))
+        return false;
+
+      row.push_back(val);
+    }
+    matrix.push_back(row);
+  }
+  return true;
+};
