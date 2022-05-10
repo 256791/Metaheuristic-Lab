@@ -13,7 +13,18 @@ TabuSearch::TabuSearch(Problem *problem, function<vector<Solution *>(Solution *)
 
 bool TabuSearch::checkTabu(Solution *solution)
 {
-  return (tabuList.find(solution->tabu()) == tabuList.end());
+  bool found = false;
+  for (auto el : visited)
+  {
+    if (el->match(solution))
+    {
+      // cout << ":)\n";
+      found = true;
+      break;
+    }
+  }
+
+  return (!found && tabuList.find(solution->tabu()) == tabuList.end());
 }
 
 void TabuSearch::addTabu(Solution *solution)
@@ -29,12 +40,22 @@ void TabuSearch::addTabu(Solution *solution)
   }
 }
 
-Solution *TabuSearch::search(Solution *initial, long unsigned int maxIter)
+void TabuSearch::clearTabu()
+{
+  tabuList.clear();
+  while (!tabuQueue.empty())
+    tabuQueue.pop();
+}
+
+Solution *TabuSearch::search(Solution *initial, long unsigned int maxIter, int max_depth, bool clear)
 {
   solution = initial;
   best = problem->eval(solution);
+
   Solution *current = initial;
   long unsigned int iter = 0;
+  long unsigned int impiter = 0;
+  bool improved = false;
   do
   {
     vector<Solution *> solutions = neighbourhood(current);
@@ -54,20 +75,36 @@ Solution *TabuSearch::search(Solution *initial, long unsigned int maxIter)
     if (next == nullptr)
     {
       cout << "tabu clear\n";
-      tabuList.clear();
-      while(!tabuQueue.empty())
-        tabuQueue.pop();
-    }else{
+      clearTabu();
+    }
+    else
+    {
       current = next;
       addTabu(current);
+      if (improved)
+      {
+        visited.push_back(next);
+        improved = false;
+      }
+      else if (impiter == max_depth)
+      {
+        if(clear)
+          clearTabu();
+        current = solution;
+        impiter = 0;
+        improved = true;
+      }
       if (nextBest < best)
       {
+        improved = true;
         solution = next;
         best = nextBest;
+        visited.clear();
+        impiter = 0;
       }
-      iter++;
     }
+    iter++;
+    impiter++;
   } while (iter < maxIter);
-
   return solution;
 }

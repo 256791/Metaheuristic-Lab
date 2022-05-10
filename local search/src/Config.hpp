@@ -6,7 +6,8 @@ using namespace std;
 enum Mode
 {
   invert,
-  swap
+  swap,
+  insert
 };
 
 class Config
@@ -15,8 +16,10 @@ public:
   Mode mode = Mode::invert;
   int max_tabu = 1000;
   int max_iter = 10000;
-  int max_iter_imp = 1000;
+  int max_depth = 1000;
+  int threads = 4;
   string input = "";
+  bool clearTabu = false;
 
   string parse(int argc, char **argv);
 };

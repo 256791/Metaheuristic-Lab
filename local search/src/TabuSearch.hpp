@@ -13,6 +13,7 @@ class Solution
 public:
   Solution();
   virtual pair<int, int> tabu() = 0;
+  virtual bool match(Solution* rhs) = 0;
 };
 
 class Problem
@@ -29,6 +30,7 @@ private:
   long unsigned int maxTabuSize;
   map<pair<int, int>, int> tabuList;
   queue<pair<int, int>> tabuQueue;
+  vector<Solution *> visited;
 
   Problem *problem;
 
@@ -41,9 +43,9 @@ public:
   TabuSearch(Problem *problem, function<vector<Solution *>(Solution *)> neighbourhood, long unsigned int maxTabuSize = 1000);
 
   bool checkTabu(Solution *solution);
-
+  void clearTabu();
   void addTabu(Solution *solution);
 
-  Solution *search(Solution *initial, long unsigned int maxIter = 1000);
+  Solution *search(Solution *initial, long unsigned int maxIter = 1000, int max_depth = 1000, bool clear = false);
 };
 #endif

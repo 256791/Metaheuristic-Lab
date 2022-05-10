@@ -1,5 +1,5 @@
 CC = g++
-CPPFLAGS = -Wall
+CPPFLAGS = -Wall -std=c++17 -pthread
 
 SRC_DIR = src
 OBJ_DIR = build
