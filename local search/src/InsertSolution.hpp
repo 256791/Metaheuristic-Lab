@@ -12,5 +12,6 @@ public:
   vector<int> getPath() override;
   static void neighbourhood(NeighbourhoodParams p);
   // static vector<Solution *> neighbourhood(Problem *p, Solution *s);
+  ~InsertSolution() = default;
 };
 #endif

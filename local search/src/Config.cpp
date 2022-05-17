@@ -15,6 +15,14 @@ string Config::parse(int argc, char **argv)
       if (max_iter < 1)
         return "-max_iter should be at least 1";
     }
+    else if (strcmp(argv[i], "-max_imp_iter") == 0)
+    {
+      if (++i == argc)
+        return "missing value for -max_imp_iter";
+      max_imp_iter = atoi(argv[i]);
+      if (max_imp_iter < 1)
+        return "-max_imp_iter should be at least 1";
+    }
     else if (strcmp(argv[i], "-max_depth") == 0)
     {
       if (++i == argc)

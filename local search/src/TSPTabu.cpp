@@ -71,8 +71,9 @@ double TSPProblem::eval(Solution *s)
 
 bool TSPProblem::fromFile(string filename)
 {
-  system(("python3 convert.py " + filename).c_str());
-  fstream in("data/" + filename);
+  // convert using python to mat
+  // system(("python3 convert.py " + filename).c_str());
+  fstream in(filename);
   matrix.clear();
 
   int size, val;

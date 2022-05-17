@@ -17,6 +17,7 @@ public:
   int max_tabu = 1000;
   int max_iter = 10000;
   int max_depth = 1000;
+  int max_imp_iter = 1000;
   int threads = 4;
   string input = "";
   bool clearTabu = false;

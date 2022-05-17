@@ -14,6 +14,7 @@ public:
   Solution();
   virtual pair<int, int> tabu() = 0;
   virtual bool match(Solution* rhs) = 0;
+  virtual ~Solution() = default;
 };
 
 class Problem
@@ -46,6 +47,6 @@ public:
   void clearTabu();
   void addTabu(Solution *solution);
 
-  Solution *search(Solution *initial, long unsigned int maxIter = 1000, int max_depth = 1000, bool clear = false);
+  Solution *search(Solution *initial, long unsigned int maxIter = 1000, long unsigned int maxDepth = 1000, long unsigned int maxImpIter = 1000, bool clear = false);
 };
 #endif

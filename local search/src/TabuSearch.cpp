@@ -18,7 +18,6 @@ bool TabuSearch::checkTabu(Solution *solution)
   {
     if (el->match(solution))
     {
-      // cout << ":)\n";
       found = true;
       break;
     }
@@ -47,13 +46,14 @@ void TabuSearch::clearTabu()
     tabuQueue.pop();
 }
 
-Solution *TabuSearch::search(Solution *initial, long unsigned int maxIter, int max_depth, bool clear)
+Solution *TabuSearch::search(Solution *initial, long unsigned int maxIter, long unsigned int maxDepth, long unsigned int maxImpIter, bool clear)
 {
   solution = initial;
   best = problem->eval(solution);
 
   Solution *current = initial;
   long unsigned int iter = 0;
+  long unsigned int depth = 0;
   long unsigned int impiter = 0;
   bool improved = false;
   do
@@ -69,13 +69,16 @@ Solution *TabuSearch::search(Solution *initial, long unsigned int maxIter, int m
         {
           next = el;
           nextBest = problem->eval(el);
+        }else{
+          delete el;
         }
+      }else{
+        delete el;
       }
     }
     if (next == nullptr)
     {
-      cout << "tabu clear\n";
-      clearTabu();
+      break;
     }
     else
     {
@@ -86,12 +89,12 @@ Solution *TabuSearch::search(Solution *initial, long unsigned int maxIter, int m
         visited.push_back(next);
         improved = false;
       }
-      else if (impiter == max_depth)
+      else if (depth == maxDepth)
       {
         if(clear)
           clearTabu();
         current = solution;
-        impiter = 0;
+        depth = 0;
         improved = true;
       }
       if (nextBest < best)
@@ -100,10 +103,14 @@ Solution *TabuSearch::search(Solution *initial, long unsigned int maxIter, int m
         solution = next;
         best = nextBest;
         visited.clear();
+        depth = 0;
         impiter = 0;
       }
+      if(impiter>maxImpIter)
+        break;
     }
     iter++;
+    depth++;
     impiter++;
   } while (iter < maxIter);
   return solution;

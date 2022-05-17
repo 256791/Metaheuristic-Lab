@@ -25,7 +25,7 @@ int main(int argc, char **argv)
     cerr << "Problem loading error" << endl;
     return 0;
   }
-  cout << "Problem size: " << problem->size() << '\n';
+  // cout << "Problem size: " << problem->size() << '\n';
 
   function<vector<Solution *>(Solution *)> neighbourhood;
   TSPSolution *initial;
@@ -50,21 +50,21 @@ int main(int argc, char **argv)
   }
 
   TabuSearch ts(problem, neighbourhood, cnf.max_tabu);
-  Solution *sol = ts.search(initial, cnf.max_iter, cnf.max_depth, cnf.clearTabu);
+  Solution *sol = ts.search(initial, cnf.max_iter, cnf.max_depth, cnf.max_imp_iter, cnf.clearTabu);
   TSPSolution *solution = dynamic_cast<TSPSolution *>(sol);
-  cout << "Cost: " << solution->cost << '\n';
+  // cout << "Cost: " << solution->cost << '\n';
 
   //DEBUG ONLY
   solution->cached = false;
   problem->eval(solution);
-  cout << solution->cost << '\n';
-  cout << solution->path.size() << '\n';
+  // cout << solution->path.size() << '\n';
 
-  cout << "Path:\n";
+  // cout << "Path:\n";
   for(auto el : solution->getPath()){
     cout << el << ' ';
   }
   cout << endl;
+  cout << solution->cost << '\n';
 
   return 0;
 }
