@@ -21,32 +21,35 @@ def prepareTSPInstances():
 
 if __name__ == '__main__':
     # prepareTSPInstances()
-    # prepareRandInstances(range(10, 21, 10))
+    # prepareRandInstances(range(5, 61, 5))
 
-    instances = getTSPInfo('../data/tsprand/')
-    for e in instances:
-        e['matfile'] = f'../data/tsprandmat/{e["name"]}.mat'
-
-    print('start:')
-
-    ts.testTimePrd(instances, '../data/tests/random/timePrd')
-    ts.testTabuSize(instances, '../data/tests/random/tabuSize')
-    ts.testMaxDepth(instances, '../data/tests/random/maxDepth')
-    ts.testMaxImpiter(instances, '../data/tests/random/maxImpiter')
-
-
-    # instances = list(
-    #     filter(lambda e: e['size'] <= 80, getTSPInfo('../data/tsplib/')))
+    # instances = getTSPInfo('../data/tsprand/')
     # for e in instances:
-    #     print(e['name'])
-    #     e['matfile'] = f'../data/tspmat/{e["name"]}.mat'
+    #     e['matfile'] = f'../data/tsprandmat/{e["name"]}.mat'
 
     # print('start:')
 
-    # ts.testTimePrd(instances, '../data/tests/timePrd')
-    # ts.testTabuSize(instances, '../data/tests/tabuSize')
-    # ts.testMaxDepth(instances, '../data/tests/maxDepth')
-    # ts.testMaxImpiter(instances, '../data/tests/maxImpiter')
+    # ts.testTimePrd(instances, '../data/tests/random/timePrd')
+    # ts.testTabuSize(instances, '../data/tests/random/tabuSize')
+    # ts.testMaxDepth(instances, '../data/tests/random/maxDepth')
+    # ts.testMaxImpiter(instances, '../data/tests/random/maxImpiter')
+
+
+    instances = list(
+        filter(lambda e: e['size'] <= 50, getTSPInfo('../data/tsplib/')))
+    for e in instances:
+        print(e['name'])
+        e['matfile'] = f'../data/tspmat/{e["name"]}.mat'
+
+    print('testTimePrd:')
+    ts.testTimePrd(instances, '../data/tests/timePrd')
+    print('testTabuSize:')
+    ts.testTabuSize(instances, '../data/tests/tabuSize')
+    print('testMaxDepth:')
+    ts.testMaxDepth(instances, '../data/tests/maxDepth')
+    print('testMaxImpiter:')
+    ts.testMaxImpiter(instances, '../data/tests/maxImpiter')
+    print('done:')
 
 
 

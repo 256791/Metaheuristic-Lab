@@ -7,6 +7,7 @@ class InsertSolution : public TSPSolution
 {
 public:
   InsertSolution(TSPProblem *problem);
+  InsertSolution(TSPProblem *problem, vector<int> initial);
   InsertSolution(TSPSolution *parrent, pair<int, int> t, double cost);
 
   vector<int> getPath() override;

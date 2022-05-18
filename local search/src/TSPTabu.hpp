@@ -8,6 +8,7 @@ struct NeighbourhoodParams
 {
   TSPProblem *problem;
   TSPSolution *solution;
+  double cost;
   vector<int> path;
   int start;
   int end;
@@ -39,6 +40,7 @@ public:
   pair<int, int> t;
 
   TSPSolution(TSPProblem *problem);
+  TSPSolution(TSPProblem *problem, vector<int> initial);
   TSPSolution(TSPSolution *parrent, pair<int, int> swap, double cost);
 
   pair<int, int> tabu() override;

@@ -66,9 +66,19 @@ string Config::parse(int argc, char **argv)
         return "missing value for -input";
       input = argv[i];
     }
+    else if (strcmp(argv[i], "-path_input") == 0)
+    {
+      if (++i == argc)
+        return "missing value for -path_input";
+      path_input = argv[i];
+    }
     else if (strcmp(argv[i], "-clear_tabu") == 0)
     {
       clearTabu = true;
+    }
+    else if (strcmp(argv[i], "-print_debug") == 0)
+    {
+      printDebug = true;
     }
     else
       return "unrecognized argument";

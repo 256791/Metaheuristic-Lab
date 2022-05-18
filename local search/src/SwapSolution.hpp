@@ -7,6 +7,7 @@ class SwapSolution: public TSPSolution
 {
 public:
   SwapSolution(TSPProblem *problem);
+  SwapSolution(TSPProblem *problem, vector<int> initial);
   SwapSolution(TSPSolution *parrent, pair<int, int> t, double cost);
 
   vector<int> getPath() override;

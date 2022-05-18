@@ -2,6 +2,7 @@
 #include <thread>
 
 InvertSolution::InvertSolution(TSPProblem *problem) : TSPSolution(problem) {}
+InvertSolution::InvertSolution(TSPProblem *problem, vector<int> initial) : TSPSolution(problem, initial) {}
 InvertSolution::InvertSolution(TSPSolution *parrent, pair<int, int> t, double cost) : TSPSolution(parrent, t, cost) {}
 
 vector<int> InvertSolution::getPath()

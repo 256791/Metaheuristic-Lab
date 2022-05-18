@@ -4,6 +4,8 @@ SwapSolution::SwapSolution(TSPProblem *problem) : TSPSolution(problem) {}
 
 SwapSolution::SwapSolution(TSPSolution *parrent, pair<int, int> t, double cost) : TSPSolution(parrent, t, cost) {}
 
+SwapSolution::SwapSolution(TSPProblem *problem, vector<int> initial) : TSPSolution(problem, initial) {}
+
 vector<int> SwapSolution::getPath()
 {
   if (path.size() == size)
@@ -26,23 +28,43 @@ void SwapSolution::neighbourhood(NeighbourhoodParams p)
   {
     for (int j = i + 1; j < p.problem->size(); j++)
     {
+      // double cost = p.cost;
+
+      // cost -= p.problem->cost(p.path[(i - 1) % p.problem->size()], p.path[i]);
+      // cost -= p.problem->cost(p.path[i], p.path[(i + 1) % p.problem->size()]);
+      // cost -= p.problem->cost(p.path[(j - 1) % p.problem->size()], p.path[j]);
+      // if(i != 0 || j+1 != p.problem->size())
+      //   cost -= p.problem->cost(p.path[j], p.path[(j + 1) % p.problem->size()]);
+
+      // cost += p.problem->cost(p.path[(i - 1) % p.problem->size()], p.path[j]);
+      // if(i != 0 || j+1 != p.problem->size())
+      //   |cost += p.problem->cost(p.path[j], p.path[(i + 1) % p.problem->size()]);
+      // cost += p.problem->cost(p.path[(j - 1) % p.problem->size()], p.path[i]);
+      // cost += p.problem->cost(p.path[i], p.path[(j + 1) % p.problem->size()]);
+      // double cost = solution->cost;
+
       vector<int> npath(p.path);
 
       int temp = npath[i];
       npath[i] = npath[j];
       npath[j] = temp;
 
-      double cost = solution->cost;
+      double cost = 0.0;
+      for (int k = 0; k < npath.size() - 1; k++)
+      {
+        cost += p.problem->cost(npath[k], npath[k + 1]);
+      }
+      cost += p.problem->cost(npath[npath.size() - 1], npath[0]);
 
-      cost -= p.problem->cost(p.path[i == 0 ? p.path.size() - 1 : i - 1], p.path[i]);
-      cost -= p.problem->cost(p.path[i], p.path[i + 1]);
-      cost -= p.problem->cost(p.path[j - 1], p.path[j]);
-      cost -= p.problem->cost(p.path[j], p.path[j == p.path.size() - 1 ? 0 : j + 1]);
+      // cost -= p.problem->cost(p.path[i == 0 ? p.path.size() - 1 : i - 1], p.path[i]);
+      // cost -= p.problem->cost(p.path[i], p.path[i + 1]);
+      // cost -= p.problem->cost(p.path[j - 1], p.path[j]);
+      // cost -= p.problem->cost(p.path[j], p.path[j == p.path.size() - 1 ? 0 : j + 1]);
 
-      cost += p.problem->cost(npath[i == 0 ? npath.size() - 1 : i - 1], npath[i]);
-      cost += p.problem->cost(npath[i], npath[i + 1]);
-      cost += p.problem->cost(npath[j - 1], npath[j]);
-      cost += p.problem->cost(npath[j], npath[j == npath.size() - 1 ? 0 : j + 1]);
+      // cost += p.problem->cost(npath[i == 0 ? npath.size() - 1 : i - 1], npath[i]);
+      // cost += p.problem->cost(npath[i], npath[i + 1]);
+      // cost += p.problem->cost(npath[j - 1], npath[j]);
+      // cost += p.problem->cost(npath[j], npath[j == npath.size() - 1 ? 0 : j + 1]);
 
       p.ret->push_back(new SwapSolution(solution, pair<int, int>(i, j), cost));
     }

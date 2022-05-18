@@ -5,10 +5,11 @@ Solution::Solution() {}
 
 Problem::Problem() {}
 
-TabuSearch::TabuSearch(Problem *problem, function<vector<Solution *>(Solution *)> neighbourhood, long unsigned int maxTabuSize)
+TabuSearch::TabuSearch(Problem *problem, function<vector<Solution *>(Solution *)> neighbourhood, long unsigned int maxTabuSize, bool debug)
 {
   this->neighbourhood = neighbourhood;
   this->problem = problem;
+  this->debug = debug;
 }
 
 bool TabuSearch::checkTabu(Solution *solution)
@@ -99,6 +100,9 @@ Solution *TabuSearch::search(Solution *initial, long unsigned int maxIter, long 
       }
       if (nextBest < best)
       {
+        if(debug)
+          cout << "Found new global optimum = " << nextBest << " at iteration = " << iter << "\n";
+
         improved = true;
         solution = next;
         best = nextBest;
@@ -113,5 +117,9 @@ Solution *TabuSearch::search(Solution *initial, long unsigned int maxIter, long 
     depth++;
     impiter++;
   } while (iter < maxIter);
+
+  if(debug)
+    cout << "Exit after " << iter << " iterations.\n";
+  
   return solution;
 }

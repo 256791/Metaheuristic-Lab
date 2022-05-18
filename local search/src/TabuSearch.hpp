@@ -28,6 +28,7 @@ class TabuSearch
 {
 private:
   int tabuId = 0;
+  bool debug;
   long unsigned int maxTabuSize;
   map<pair<int, int>, int> tabuList;
   queue<pair<int, int>> tabuQueue;
@@ -41,7 +42,7 @@ private:
   function<vector<Solution *>(Solution *)> neighbourhood;
 
 public:
-  TabuSearch(Problem *problem, function<vector<Solution *>(Solution *)> neighbourhood, long unsigned int maxTabuSize = 1000);
+  TabuSearch(Problem *problem, function<vector<Solution *>(Solution *)> neighbourhood, long unsigned int maxTabuSize = 1000, bool debug = false);
 
   bool checkTabu(Solution *solution);
   void clearTabu();

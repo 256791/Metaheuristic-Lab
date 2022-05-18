@@ -11,6 +11,12 @@ TSPSolution::TSPSolution(TSPProblem *problem)
   problem->eval(this);
 }
 
+TSPSolution::TSPSolution(TSPProblem *problem, vector<int> initial){
+  this->size = problem->size();
+  this->path = initial;
+  problem->eval(this);
+}
+
 TSPSolution::TSPSolution(TSPSolution *parrent, pair<int, int> t, double cost)
 {
   this->parrent = parrent;
@@ -126,6 +132,7 @@ vector<Solution *> TSPSolution::neighbourhoodThreaded(Problem *p, Solution *s, v
   {
     params[i].problem = problem;
     params[i].solution = solution;
+    params[i].cost = p->eval(s);
     params[i].path = solution->getPath();
     params[i].start = range;
     if (i == threads - 1)

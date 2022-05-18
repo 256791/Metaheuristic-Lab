@@ -8,6 +8,7 @@ class InvertSolution : public TSPSolution
 {
 public:
   InvertSolution(TSPProblem *problem);
+  InvertSolution(TSPProblem *problem, vector<int> initial);
   InvertSolution(TSPSolution *parrent, pair<int, int> t, double cost);
 
   vector<int> getPath() override;

@@ -20,7 +20,9 @@ public:
   int max_imp_iter = 1000;
   int threads = 4;
   string input = "";
+  string path_input = "";
   bool clearTabu = false;
+  bool printDebug = false;
 
   string parse(int argc, char **argv);
 };
